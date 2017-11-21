@@ -20,7 +20,7 @@ namespace CalculadoraMetodosNumericos
         private void btnCalcularB_Click(object sender, EventArgs e)
         {
             double masa = 0, tiempo = 0, velocidad = 0, errorE = 0, c1 = 0, c2 = 0, c3 = 0, funcion1 = 0, funcion2 = 0,
-                funcion3 = 0, errorA = 100, vAct = 0, vAnt = 0, aux = 0;
+                funcion3 = 0, errorA = 100, vAct = 0, vAnt = 0;
             int i = 0;
 
             try
@@ -29,44 +29,49 @@ namespace CalculadoraMetodosNumericos
                 tiempo = Convert.ToDouble(txtTiempoB.Text);
                 velocidad = Convert.ToDouble(txtVelocidadB.Text);
                 errorE = Convert.ToDouble(txtErrorEB.Text);
+                c1 = Convert.ToDouble(txtC1B.Text);
+                c2 = Convert.ToDouble(txtC2B.Text);
 
-                Random r = new Random();
                 Funciones f = new Funciones();
-                c1 = r.Next(0, 32767);
-                c2 = r.Next(0, 32767);
 
                 funcion1 = f.f1(masa, tiempo, velocidad, c1);
                 funcion2 = f.f1(masa, tiempo, velocidad, c2);
-                while (funcion1 * funcion2 > 0)
+
+                if(funcion1 * funcion2 > 0)
                 {
-                    c2 = r.Next(0, 32767);
+                    MessageBox.Show("Cambie el valor de alguna C", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    c1 = Convert.ToDouble(txtC1B.Text);
+                    c2 = Convert.ToDouble(txtC2B.Text);
+                    funcion1 = f.f1(masa, tiempo, velocidad, c1);
                     funcion2 = f.f1(masa, tiempo, velocidad, c2);
                 }
-
-                while (errorA > errorE)
+                else
                 {
-                    c3 = (c1 + c2) / 2;
-                    vAct = c3;
-                    funcion3 = f.f1(masa, tiempo, velocidad, c3);
-                    errorA = Math.Abs(((vAct - vAnt) / vAct) * 100);
-                    vAnt = c3;
-                    i++;
+                    while (errorA > errorE)
+                    {
+                        c3 = (c1 + c2) / 2;
+                        vAct = c3;
+                        funcion3 = f.f1(masa, tiempo, velocidad, c3);
+                        errorA = Math.Abs(((vAct - vAnt) / vAct) * 100);
+                        vAnt = c3;
+                        i++;
 
-                    if (funcion1 * funcion3 < 0)
-                    {
-                        funcion2 = funcion3;
-                        c2 = c3;
+                        if (funcion1 * funcion3 < 0)
+                        {
+                            funcion2 = funcion3;
+                            c2 = c3;
+                        }
+                        else if (funcion2 * funcion3 < 0)
+                        {
+                            funcion1 = funcion3;
+                            c1 = c3;
+                        }
                     }
-                    else if (funcion2 * funcion3 < 0)
-                    {
-                        funcion1 = funcion3;
-                        c1 = c3;
-                    }
+                    txtResultadoB.Text = Convert.ToString(Math.Round(c3, 5));
+                    txtIteracionesB.Text = Convert.ToString(i);
+                    txtErrorAB.Text = Convert.ToString(Math.Round(errorA, 5));
+                    btnCalcularB.Enabled = false;
                 }
-                txtResultadoB.Text = Convert.ToString(Math.Round(c3, 5));
-                txtIteracionesB.Text = Convert.ToString(i);
-                txtErrorAB.Text = Convert.ToString(Math.Round(errorA, 5));
-                btnCalcularB.Enabled = false;
             }
             catch {
                 MessageBox.Show("Ingresó algún caracter inválido", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -89,13 +94,12 @@ namespace CalculadoraMetodosNumericos
             int i = 0;
             try
             {
-                Random r = new Random();
-                c = r.Next(0, 3276); //Se toma un número aleatorio para comenzar las iteraciones
-
                 masa = Convert.ToDouble(txtMasaPF.Text);
                 tiempo = Convert.ToDouble(txtTiempoPF.Text);
                 velocidad = Convert.ToDouble(txtVelocidadPF.Text);
                 errorE = Convert.ToDouble(txtErrorEPF.Text);
+                errorE = Convert.ToDouble(txtErrorEPF.Text);
+                c = Convert.ToDouble(txtCPF.Text);
                 Funciones f = new Funciones();
 
                 funcion = f.f2(masa, tiempo, velocidad, c); //Se manda llamar la clase con la función que se usará
@@ -129,14 +133,12 @@ namespace CalculadoraMetodosNumericos
             int i = 0;
             try
             {
-                Random r = new Random();
-                c1 = r.Next(0, 50);
-                c2 = r.Next(0, 50);
-
                 masa = Convert.ToDouble(txtMasaS.Text);
                 tiempo = Convert.ToDouble(txtTiempoS.Text);
                 velocidad = Convert.ToDouble(txtVelocidadS.Text);
                 errorE = Convert.ToDouble(txtErrorES.Text);
+                c1 = Convert.ToDouble(txtC1S.Text);
+                c2 = Convert.ToDouble(txtC2S.Text);
                 Funciones f = new Funciones();
 
 
